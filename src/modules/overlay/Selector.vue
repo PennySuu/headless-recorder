@@ -46,16 +46,23 @@ export default {
         return
       }
 
-      this.dimensions.top = -window.scrollY
-      this.dimensions.left = -window.scrollX
+      // this.dimensions.top = -window.scrollY
+      // this.dimensions.left = -window.scrollX
 
-      let elem = e.target
+      this.dimensions.top = 0
+      this.dimensions.left = 0
 
-      while (elem && elem !== document.body) {
-        this.dimensions.top += elem.offsetTop
-        this.dimensions.left += elem.offsetLeft
-        elem = elem.offsetParent
-      }
+      // let elem = e.target
+      let { top, left } = e.target.getBoundingClientRect()
+
+      // while (elem && elem !== document.body) {
+      //   this.dimensions.top += elem.offsetTop
+      //   this.dimensions.left += elem.offsetLeft
+      //   elem = elem.offsetParent
+      // }
+
+      this.dimensions.top += top
+      this.dimensions.left += left
 
       this.dimensions.width = this.element.offsetWidth + 2
       this.dimensions.height = this.element.offsetHeight + 2
@@ -79,7 +86,6 @@ export default {
             height: this.$refs.selector.style.height,
           }
         }
-
         this.$emit('click', { clip, raw: e })
       }, 100)
     },

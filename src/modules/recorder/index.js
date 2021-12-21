@@ -74,7 +74,6 @@ export default class Recorder {
       }
 
       this.store.commit('showRecorded')
-
       this._sendMessage({
         selector,
         value: e.target.value,
