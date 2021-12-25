@@ -70,6 +70,7 @@ const store = createStore({
 
     close(state) {
       state.isClosed = true
+      state.screenshotMode = false
       chrome.runtime.sendMessage({ control: overlayActions.CLOSE })
     },
 

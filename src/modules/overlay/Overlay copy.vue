@@ -9,8 +9,8 @@
   >
     <template v-if="isStopped">
       <div class="hr-success-message">
-        <h3>录制完成!</h3>
-        <p>可以复制用例了!</p>
+        <h3>Recording finished!</h3>
+        <p>You can copy the code to clipboard right away!</p>
       </div>
       <div class="hr-success-bar">
         <button @click="copy" class="hr-btn-large" style="width: 151px;">
@@ -21,12 +21,12 @@
             :src="getIcon('duplicate')"
             alt="copy to clipboard"
           />
-          <span v-show="!isCopying">复制到剪切板</span>
-          <span v-show="isCopying">已复制!</span>
+          <span v-show="!isCopying">Copy to clipboard</span>
+          <span v-show="isCopying">Copied!</span>
         </button>
         <button @click="restart" class="hr-btn-large">
           <img width="16" height="16" :src="getIcon('sync')" alt="restart recording" />
-          重新开始
+          Restart Recording
         </button>
         <button @click="close" class="btn-close">
           &times;
@@ -57,6 +57,23 @@
       >
         <img v-show="isPaused" width="27" height="27" :src="getIcon('play')" alt="play" />
         <img v-show="!isPaused" width="27" height="27" :src="getIcon('pause')" alt="pause" />
+      </button>
+      <div class="hr-separator"></div>
+      <button
+        :disabled="isPaused"
+        class="hr-btn-big"
+        @click.prevent="fullScreenshot"
+        v-tippy="{ content: 'Full Screenshot (alt+shift+F)', appendTo: 'parent' }"
+      >
+        <img width="27" height="27" :src="getIcon('screen')" alt="full page sreenshot" />
+      </button>
+      <button
+        :disabled="isPaused"
+        class="hr-btn-big"
+        @click.prevent="clippedScreenshot"
+        v-tippy="{ content: 'Element Screenshot (alt+shift+E)', appendTo: 'parent' }"
+      >
+        <img width="27" height="27" :src="getIcon('clip')" alt="clipped sreenshot" />
       </button>
       <div class="hr-separator"></div>
       <span class="hr-current-selector">
@@ -315,7 +332,7 @@ $namespace: 'hr';
       h3 {
         font-size: 14px;
         font-weight: 600;
-        margin: 0 0 3px;
+        margin: 0;
         color: #1f2d3d;
       }
 

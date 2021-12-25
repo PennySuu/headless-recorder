@@ -40,7 +40,7 @@ export default {
   name: 'ResultsTab',
 
   props: {
-    puppeteer: {
+    smartAuto: {
       type: String,
       default: '',
     },
@@ -57,19 +57,19 @@ export default {
   data() {
     return {
       activeTab: headlessTypes.PLAYWRIGHT,
-      tabs: [headlessTypes.PLAYWRIGHT, headlessTypes.PUPPETEER],
+      tabs: [headlessTypes.PLAYWRIGHT, headlessTypes.SMARTAUTO],
     }
   },
 
   computed: {
     code() {
-      return this.activeTab === headlessTypes.PUPPETEER ? this.puppeteer : this.playwright
+      return this.activeTab === headlessTypes.SMARTAUTO ? this.smartAuto : this.playwright
     },
   },
 
   mounted() {
     if (!this.options?.code?.showPlaywrightFirst) {
-      this.activeTab = headlessTypes.PUPPETEER
+      this.activeTab = headlessTypes.SMARTAUTO
       this.tabs = this.tabs.reverse()
     }
 

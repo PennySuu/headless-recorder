@@ -10,16 +10,16 @@ export const headlessActions = {
 
 export const eventsToRecord = {
   CLICK: 'click',
-  DBLCLICK: 'dblclick',
-  CHANGE: 'change',
   KEYDOWN: 'keydown',
-  SELECT: 'select',
-  SUBMIT: 'submit',
-  LOAD: 'load',
-  UNLOAD: 'unload',
+  // DBLCLICK: 'dblclick',
+  // CHANGE: 'change',
+  // SELECT: 'select',
+  // SUBMIT: 'submit',
+  // LOAD: 'load',
+  // UNLOAD: 'unload',
 }
 
 export const headlessTypes = {
-  PUPPETEER: 'puppeteer',
+  SMARTAUTO: 'smartAuto',
   PLAYWRIGHT: 'playwright',
 }

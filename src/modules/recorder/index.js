@@ -76,6 +76,7 @@ export default class Recorder {
       this.store.commit('showRecorded')
       this._sendMessage({
         selector,
+        text: this._getElementText(e.target),
         value: e.target.value,
         tagName: e.target.tagName,
         action: e.type,
@@ -86,6 +87,13 @@ export default class Recorder {
     } catch (err) {
       console.error(err)
     }
+  }
+
+  _getElementText(elem) {
+    if (elem.tagName.toLowerCase() === 'input') {
+      return elem.getAttribute('placeholder')
+    }
+    return elem.textContent?.trim()
   }
 
   _getEventLog() {

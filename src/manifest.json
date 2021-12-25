@@ -1,8 +1,8 @@
 {
-  "name": "Headless Recorder",
+  "name": "录像机",
   "version": "1.0.0",
   "manifest_version": 2,
-  "description": "A Chrome extension for recording browser interaction and generating Puppeteer & Playwright scripts",
+  "description": "录像机是基于Headless recorder实现的一款记录用户与浏览器交互行为，生成 smartAuto 和 Playwright 脚本的Chrome 插件。",
   "default_locale": "en",
   "permissions": [
     "storage",

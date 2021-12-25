@@ -15,7 +15,7 @@
     />
 
     <Results
-      :puppeteer="code"
+      :smartAuto="code"
       :playwright="codeForPlaywright"
       :options="options"
       v-if="showResultsTab"
@@ -30,7 +30,7 @@
     >
       <Button dark class="mr-2" @click="restart" v-show="code">
         <img src="/icons/dark/sync.svg" class="mr-1" alt="restart recording" />
-        Restart
+        重新开始
       </Button>
       <Button dark class="mr-2 w-34" @click="copyCode" v-show="code">
         <img
@@ -39,13 +39,13 @@
           class="mr-1"
           alt="copy code to clipboard"
         />
-        <span v-show="!isCopying">Copy to clipboard</span>
-        <span v-show="isCopying">Copied!</span>
+        <span v-show="!isCopying">复制到剪切板</span>
+        <span v-show="isCopying">已复制!</span>
       </Button>
-      <Button @click="run" v-show="code">
+      <!-- <Button @click="run" v-show="code">
         <img src="/icons/light/zap.svg" class="mr-1" alt="thunder" />
         Run on Checkly
-      </Button>
+      </Button> -->
     </div>
 
     <Footer v-if="!isRecording && !showResultsTab" />
@@ -171,10 +171,10 @@ export default {
     async generateCode() {
       const { recording, options = { code: {} } } = await storage.get(['recording', 'options'])
       const generator = new CodeGenerator(options.code)
-      const { puppeteer, playwright } = generator.generate(recording)
+      const { smartAuto, playwright } = generator.generate(recording)
 
       this.recording = recording
-      this.code = puppeteer
+      this.code = smartAuto
       this.codeForPlaywright = playwright
       this.showResultsTab = true
     },
@@ -259,7 +259,7 @@ export default {
     },
 
     getCode() {
-      return this.currentResultTab === 'puppeteer' ? this.code : this.codeForPlaywright
+      return this.currentResultTab === 'smartAuto' ? this.code : this.codeForPlaywright
     },
 
     run() {

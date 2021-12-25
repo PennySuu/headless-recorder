@@ -1,6 +1,14 @@
 import Block from '@/modules/code-generator/block'
 import { headlessActions, eventsToRecord } from '@/modules/code-generator/constants'
 
+const LOGIN_CASE = `打开#https://global-testjd.epay.163.com/signIn
+清除cookie
+//登陆
+打开#https://global-testjd.epay.163.com/signIn
+在第一个输入框输入#global_ui_test@qq.com
+在第二个输入框输入#abcABC123
+点击立即登录`
+
 export const defaults = {
   wrapAsync: false,
   headless: true,
@@ -10,6 +18,7 @@ export const defaults = {
   dataAttribute: '',
   showPlaywrightFirst: true,
   keyCode: 9,
+  headerText: LOGIN_CASE,
 }
 
 export default class BaseGenerator {
@@ -28,23 +37,26 @@ export default class BaseGenerator {
     throw new Error('Not implemented.')
   }
 
-  _getHeader() {
-    let hdr = this._options.wrapAsync ? this._wrappedHeader : this._header
-    hdr = this._options.headless ? hdr : hdr?.replace('launch()', 'launch({ headless: false })')
-    return hdr
+  _getHeader(codeType) {
+    if (codeType) {
+      let hdr = this._options.wrapAsync ? this._wrappedHeader : this._header
+      hdr = this._options.headless ? hdr : hdr?.replace('launch()', 'launch({ headless: false })')
+      return hdr
+    }
+    return this._options.headerText + `\n`
   }
 
   _getFooter() {
     return this._options.wrapAsync ? this._wrappedFooter : this._footer
   }
 
-  _parseEvents(events) {
+  _parseEvents(events, codeType) {
     let result = ''
 
     if (!events) return result
 
     for (let i = 0; i < events.length; i++) {
-      const { action, selector, value, href, keyCode, tagName, frameId, frameUrl } = events[i]
+      const { action, selector, value, href, keyCode, tagName, frameId, frameUrl, text } = events[i]
       const escapedSelector = selector ? selector?.replace(/\\/g, '\\\\') : selector
 
       // we need to keep a handle on what frames events originate from
@@ -53,11 +65,11 @@ export default class BaseGenerator {
       switch (action) {
         case 'keydown':
           if (keyCode === this._options.keyCode) {
-            this._blocks.push(this._handleKeyDown(escapedSelector, value, keyCode))
+            this._blocks.push(this._handleKeyDown(escapedSelector, value, text))
           }
           break
         case 'click':
-          this._blocks.push(this._handleClick(escapedSelector, events))
+          this._blocks.push(this._handleClick(escapedSelector, text))
           break
         case 'change':
           if (tagName === 'SELECT') {
@@ -84,6 +96,7 @@ export default class BaseGenerator {
       const block = new Block(this._frameId, {
         type: headlessActions.NAVIGATION_PROMISE,
         value: 'const navigationPromise = page.waitForNavigation()',
+        text: '',
       })
       this._blocks.unshift(block)
     }
@@ -96,7 +109,9 @@ export default class BaseGenerator {
     for (let block of this._blocks) {
       const lines = block.getLines()
       for (let line of lines) {
-        result += indent + line.value + newLine
+        const { text, value } = line
+
+        result += indent + (!codeType ? text : value) + newLine
       }
     }
 
@@ -125,26 +140,29 @@ export default class BaseGenerator {
     }
   }
 
-  _handleKeyDown(selector, value) {
+  _handleKeyDown(selector, value, text) {
     const block = new Block(this._frameId)
     block.addLine({
       type: eventsToRecord.KEYDOWN,
       value: `await ${this._frame}.type('${selector}', '${this._escapeUserInput(value)}')`,
+      text: `在${text}输入框中输入#${this._escapeUserInput(value)}`,
     })
     return block
   }
 
-  _handleClick(selector) {
+  _handleClick(selector, text) {
     const block = new Block(this._frameId)
     if (this._options.waitForSelectorOnClick) {
       block.addLine({
         type: eventsToRecord.CLICK,
         value: `await ${this._frame}.waitForSelector('${selector}')`,
+        text: `await ${this._frame}.waitForSelector('${selector}')`,
       })
     }
     block.addLine({
       type: eventsToRecord.CLICK,
       value: `await ${this._frame}.click('${selector}')`,
+      text: `点击${text}`,
     })
     return block
   }
@@ -153,6 +171,7 @@ export default class BaseGenerator {
     return new Block(this._frameId, {
       type: eventsToRecord.CHANGE,
       value: `await ${this._frame}.select('${selector}', '${value}')`,
+      text: `await ${this._frame}.select('${selector}', '${value}')`,
     })
   }
 
@@ -160,6 +179,7 @@ export default class BaseGenerator {
     return new Block(this._frameId, {
       type: headlessActions.GOTO,
       value: `await ${this._frame}.goto('${href}')`,
+      text: `等待1.5秒`,
     })
   }
 
@@ -190,6 +210,7 @@ await element${this._screenshotCounter}.screenshot({ path: 'screenshot_${this._s
       block.addLine({
         type: headlessActions.NAVIGATION,
         value: `await navigationPromise`,
+        text: '等待1.5秒',
       })
     }
     return block

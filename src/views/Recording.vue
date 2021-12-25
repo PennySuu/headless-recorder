@@ -1,9 +1,7 @@
 <template>
   <section class="flex flex-col items-center rounded-md pt-8 h-full">
     <RecordingLabel class="w-1/3" :is-paused="isPaused" :v-show="isRecording" />
-    <p class="text-gray-dark text-sm text-center w-72 dark:text-gray-light">
-      Headless recorder currently recording your browser events.
-    </p>
+    <p class="text-gray-dark text-sm text-center w-72 dark:text-gray-light"></p>
     <RoundButton big @click="$emit('stop')" class="p-12 mt-10">
       <div class="bg-gray-darkest rounded h-16 w-16 dark:bg-white"></div>
     </RoundButton>
@@ -29,7 +27,7 @@
           />
         </RoundButton>
         <span class="mt-2 text-sm font-semibold text-gray-new">{{
-          isPaused ? 'RESUME' : 'PAUSE'
+          isPaused ? '继续' : '暂停'
         }}</span>
       </div>
       <div class="flex flex-col items-center justify-center">
@@ -44,7 +42,7 @@
             alt="restart recording"
           />
         </RoundButton>
-        <span class="mt-2 text-sm font-semibold text-gray-new">RESTART</span>
+        <span class="mt-2 text-sm font-semibold text-gray-new">重新开始</span>
       </div>
     </div>
   </section>

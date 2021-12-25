@@ -50,9 +50,13 @@ export default class Overlay {
 
     this.mouseOverEvent = e => {
       const selector = getSelector(e, { dataAttribute: this.store.state.dataAttribute })
+      const elem = document.querySelector(selector)
+      const { tagName, textContent } = elem
       this.overlayApp.currentSelector = selector.includes('#' + overlaySelectors.OVERLAY_ID)
         ? ''
-        : selector
+        : tagName === 'INPUT'
+        ? elem.getAttribute('placeholder') || ''
+        : textContent?.substr(0, 50)
 
       if (
         this.overlayApp.currentSelector &&

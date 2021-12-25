@@ -2,8 +2,6 @@ import Block from '@/modules/code-generator/block'
 import { headlessActions } from '@/modules/code-generator/constants'
 import BaseGenerator from '@/modules/code-generator/base-generator'
 
-// const importPuppeteer = `const puppeteer = require('puppeteer');\n`
-
 const header = `const browser = await puppeteer.launch()
 const page = await browser.newPage()`
 

@@ -196,7 +196,7 @@ class Background {
 
       browser.sendTabMessage({
         action: 'CODE',
-        value: options?.code?.showPlaywrightFirst ? code.playwright : code.puppeteer,
+        value: options?.code?.showPlaywrightFirst ? code.playwright : code.smartAuto,
       })
     }
 
