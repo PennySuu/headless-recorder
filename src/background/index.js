@@ -186,7 +186,7 @@ class Background {
 
     if (control === overlayActions.CLOSE) {
       this.toggleOverlay()
-      chrome.runtime.onMessage.removeListener(this.overlayHandler)
+      // chrome.runtime.onMessage.removeListener(this.overlayHandler)
     }
 
     if (control === overlayActions.COPY) {

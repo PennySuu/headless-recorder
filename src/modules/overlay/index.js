@@ -55,7 +55,7 @@ export default class Overlay {
       this.overlayApp.currentSelector = selector.includes('#' + overlaySelectors.OVERLAY_ID)
         ? ''
         : tagName === 'INPUT'
-        ? elem.getAttribute('placeholder') || ''
+        ? elem.getAttribute('placeholder') || '输入框'
         : textContent?.substr(0, 50)
 
       if (

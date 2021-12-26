@@ -186,7 +186,6 @@ export default {
 
     async loadState() {
       const {
-        controls = {},
         code = '',
         options,
         codeForPlaywright = '',
@@ -195,7 +194,6 @@ export default {
         pause,
         restart,
       } = await storage.get([
-        'controls',
         'code',
         'options',
         'codeForPlaywright',
@@ -205,8 +203,8 @@ export default {
         'restart',
       ])
 
-      this.isRecording = controls.isRecording
-      this.isPaused = controls.isPaused
+      this.isRecording = recording
+      this.isPaused = pause
       this.options = options || defaultOptions
 
       this.code = code
@@ -220,10 +218,10 @@ export default {
           storage.remove(['clear'])
         }
 
-        if (pause) {
-          this.togglePause(true)
-          storage.remove(['pause'])
-        }
+        // if (pause) {
+        //   this.togglePause(true)
+        //   storage.remove(['pause'])
+        // }
 
         if (restart) {
           this.cleanUp()
@@ -239,7 +237,9 @@ export default {
       storage.set({
         code: this.code,
         codeForPlaywright: this.codeForPlaywright,
-        controls: { isRecording: this.isRecording, isPaused: this.isPaused },
+        pause: this.isPaused,
+        recording: this.isRecording,
+        // controls: { isRecording: this.isRecording, isPaused: this.isPaused },
       })
     },
 

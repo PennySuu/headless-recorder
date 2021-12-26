@@ -111,7 +111,8 @@ export default class BaseGenerator {
       for (let line of lines) {
         const { text, value } = line
 
-        result += indent + (!codeType ? text : value) + newLine
+        result += indent + (!codeType ? text : value) || '' + newLine
+        // result += indent + value + newLine
       }
     }
 
@@ -152,13 +153,13 @@ export default class BaseGenerator {
 
   _handleClick(selector, text) {
     const block = new Block(this._frameId)
-    if (this._options.waitForSelectorOnClick) {
-      block.addLine({
-        type: eventsToRecord.CLICK,
-        value: `await ${this._frame}.waitForSelector('${selector}')`,
-        text: `await ${this._frame}.waitForSelector('${selector}')`,
-      })
-    }
+    // if (this._options.waitForSelectorOnClick) {
+    //   block.addLine({
+    //     type: eventsToRecord.CLICK,
+    //     value: `await ${this._frame}.waitForSelector('${selector}')`,
+    //     text: `await ${this._frame}.waitForSelector('${selector}')`,
+    //   })
+    // }
     block.addLine({
       type: eventsToRecord.CLICK,
       value: `await ${this._frame}.click('${selector}')`,
@@ -243,7 +244,7 @@ await element${this._screenshotCounter}.screenshot({ path: 'screenshot_${this._s
     let i = 0
     while (i <= this._blocks.length) {
       const blankLine = new Block()
-      blankLine.addLine({ type: null, value: '' })
+      blankLine.addLine({ type: null, value: '', text: '' })
       this._blocks.splice(i, 0, blankLine)
       i += 2
     }

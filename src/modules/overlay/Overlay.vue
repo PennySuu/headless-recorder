@@ -41,19 +41,13 @@
       <span class="hr-shortcut">
         alt + k to hide
       </span>
-      <button
-        class="hr-btn"
-        title="stop"
-        @click="stop"
-        v-tippy="{ content: 'Stop Recording', appendTo: 'parent' }"
-      >
+      <button class="hr-btn" @click="stop" v-tippy="{ content: '结束', appendTo: 'parent' }">
         <div class="hr-stop-square"></div>
       </button>
       <button
         class="hr-btn"
-        title="pause"
         @click="pause"
-        v-tippy="{ content: isPaused ? 'Resume Recording' : 'Pause Recording', appendTo: 'parent' }"
+        v-tippy="{ content: isPaused ? '继续' : '暂停', appendTo: 'parent' }"
       >
         <img v-show="isPaused" width="27" height="27" :src="getIcon('play')" alt="play" />
         <img v-show="!isPaused" width="27" height="27" :src="getIcon('pause')" alt="pause" />
