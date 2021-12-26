@@ -85,6 +85,7 @@ const store = createStore({
 
     stop(state) {
       state.isStopped = true
+      state.screenshotMode = false
       chrome.runtime.sendMessage({ control: overlayActions.STOP })
     },
 
